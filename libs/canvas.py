@@ -510,12 +510,10 @@ class Canvas(QWidget):
         if self.verified:
             pal = self.palette()
             pal.setColor(self.backgroundRole(), QColor(184, 239, 38, 128))
-            self.setPalette(pal)
         else:
             pal = self.palette()
             pal.setColor(self.backgroundRole(), QColor(232, 232, 232, 255))
-            self.setPalette(pal)
-
+        self.setPalette(pal)
         p.end()
 
     def transformPos(self, point):

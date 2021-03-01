@@ -58,7 +58,7 @@ class CreateMLWriter:
 
         # check if image already in output
         exists = False
-        for i in range(0, len(outputdict)):
+        for i in range(len(outputdict)):
             if outputdict[i]["image"] == outputimagedict["image"]:
                 exists = True
                 outputdict[i] = outputimagedict
