@@ -23,9 +23,15 @@ class YOLOWriter:
         self.verified = False
 
     def addBndBox(self, xmin, ymin, xmax, ymax, name, difficult):
-        bndbox = {'xmin': xmin, 'ymin': ymin, 'xmax': xmax, 'ymax': ymax}
-        bndbox['name'] = name
-        bndbox['difficult'] = difficult
+        bndbox = {
+            'xmin': xmin,
+            'ymin': ymin,
+            'xmax': xmax,
+            'ymax': ymax,
+            'name': name,
+            'difficult': difficult,
+        }
+
         self.boxlist.append(bndbox)
 
     def BndBox2YoloLine(self, box, classList=[]):
@@ -58,25 +64,20 @@ class YOLOWriter:
             out_file = open(
             self.filename + TXT_EXT, 'w', encoding=ENCODE_METHOD)
             classesFile = os.path.join(os.path.dirname(os.path.abspath(self.filename)), "classes.txt")
-            out_class_file = open(classesFile, 'w')
-
         else:
             out_file = codecs.open(targetFile, 'w', encoding=ENCODE_METHOD)
             classesFile = os.path.join(os.path.dirname(os.path.abspath(targetFile)), "classes.txt")
-            out_class_file = open(classesFile, 'w')
+        with open(classesFile, 'w') as out_class_file:
+            for box in self.boxlist:
+                classIndex, xcen, ycen, w, h = self.BndBox2YoloLine(box, classList)
+                # print (classIndex, xcen, ycen, w, h)
+                out_file.write("%d %.6f %.6f %.6f %.6f\n" % (classIndex, xcen, ycen, w, h))
 
+            # print (classList)
+            # print (out_class_file)
+            for c in classList:
+                out_class_file.write(c+'\n')
 
-        for box in self.boxlist:
-            classIndex, xcen, ycen, w, h = self.BndBox2YoloLine(box, classList)
-            # print (classIndex, xcen, ycen, w, h)
-            out_file.write("%d %.6f %.6f %.6f %.6f\n" % (classIndex, xcen, ycen, w, h))
-
-        # print (classList)
-        # print (out_class_file)
-        for c in classList:
-            out_class_file.write(c+'\n')
-
-        out_class_file.close()
         out_file.close()
 
 

@@ -68,19 +68,21 @@ class PascalVocWriter:
         depth = SubElement(size_part, 'depth')
         width.text = str(self.imgSize[1])
         height.text = str(self.imgSize[0])
-        if len(self.imgSize) == 3:
-            depth.text = str(self.imgSize[2])
-        else:
-            depth.text = '1'
-
+        depth.text = str(self.imgSize[2]) if len(self.imgSize) == 3 else '1'
         segmented = SubElement(top, 'segmented')
         segmented.text = '0'
         return top
 
     def addBndBox(self, xmin, ymin, xmax, ymax, name, difficult):
-        bndbox = {'xmin': xmin, 'ymin': ymin, 'xmax': xmax, 'ymax': ymax}
-        bndbox['name'] = name
-        bndbox['difficult'] = difficult
+        bndbox = {
+            'xmin': xmin,
+            'ymin': ymin,
+            'xmax': xmax,
+            'ymax': ymax,
+            'name': name,
+            'difficult': difficult,
+        }
+
         self.boxlist.append(bndbox)
 
     def appendObjects(self, top):

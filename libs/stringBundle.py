@@ -56,13 +56,13 @@ class StringBundle:
         return resultPaths
 
     def __loadBundle(self, path):
-        PROP_SEPERATOR = '='
         f = QFile(path)
         if f.exists():
             if f.open(QIODevice.ReadOnly | QFile.Text):
                 text = QTextStream(f)
                 text.setCodec("UTF-8")
 
+            PROP_SEPERATOR = '='
             while not text.atEnd():
                 line = ustr(text.readLine())
                 key_value = line.split(PROP_SEPERATOR)
